@@ -23,33 +23,6 @@ namespace ToneBaker.PCM {
         public enum WaveType { SINE, SAWTOOTH, SQUARE, TRIANGLE };
 
         /// <summary>
-        /// Converts a stream of PCMSample objects into a raw byte array.
-        /// </summary>
-        /// <param name="audioStream">The stream to convert.</param>
-        /// <returns>A raw byte array representing the provided PCMSample stream.</returns>
-        public static byte[] ToByteArray(PCMSample[] audioStream) {
-            var returnStream = new List<byte>();
-            foreach(PCMSample sample in audioStream) { returnStream.AddRange(sample.Sample); }
-            return returnStream.ToArray();
-        }
-
-        /// <summary>
-        /// Create and return an audio stream of the specified duration that has no sound.
-        /// </summary>
-        /// <param name="audioFormat">The format in which the silence should be created.</param>
-        /// <param name="spaceDurationSec">The amount of time in seconds for which to create total silence.</param>
-        /// <returns>Zeroed set of PCMSample objects that will not make any sound if played.</returns>
-        /// <see cref="PCMSample"/>
-        public static List<PCMSample> CreateEmptySpace(AudioFormat audioFormat, double spaceDurationSec) {
-            double totalSamples = Math.Ceiling(spaceDurationSec * (double)audioFormat.SampleRate);
-            PCMSample[] silentAudioStream = new PCMSample[(int)totalSamples];
-            for(int i = 0; i < (int)totalSamples; i++) {
-                silentAudioStream[i] = new PCMSample(audioFormat, 0);
-            }
-            return new List<PCMSample>(silentAudioStream);
-        }
-
-        /// <summary>
         /// Generates a new wave-form as an audio stream (list of PCMSample objects).
         /// </summary>
         /// <param name="audioFormat">The format used to sample the waveform.</param>

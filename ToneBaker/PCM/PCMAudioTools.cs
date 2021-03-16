@@ -16,7 +16,8 @@ namespace ToneBaker.PCM {
         /// <param name="peakOutputAmplitudePercentage">A scaling percentage for the final stream's peak output amplitude. Defaults to 100%, which represents no change in the mixed stream's volume.</param>
         /// <param name="componentStreamCollection">Any amount of tuples consisting of the amplitude (volume) weighting within all mixed samples, and the audio sample itself. NOTE: The weighting is NOT a percentage value!</param>
         /// <returns>An audio stream (stream of samples) equal to the combination of all provided component streams at their given amplitude weightings.</returns>
-        /// <see cref="WaveSample"/>
+        /// <see cref="PCMSample"/>
+        /// <seealso cref="InterlaceSamples(AudioFormat, ref List{PCMSample}, (double startTimeSeconds, double amplitudePercentage, List{PCMSample} audioStream)[])"/>
         public static List<PCMSample> MixSamples(
                 AudioFormat audioFormat,
                 double peakOutputAmplitudePercentage = 100.0,
@@ -69,6 +70,51 @@ namespace ToneBaker.PCM {
 
 
         /// <summary>
+        /// Used to combine multiple PCM audio streams with varying volumes and starting locations, into a single resulting PCM stream at the given final amplitude percentage.
+        /// </summary>
+        /// <param name="audioFormat">The format all given streams are REQUIRED to use. If a component stream does NOT use this format, an exception will be raised.</param>
+        /// <param name="peakOutputAmplitudePercentage">The max amplitude percentage (i.e. volume) of the final, interlaced sample. Defaults to 100%.</param>
+        /// <param name="componentStreams">All streams to be interlaced; composed of (1) the start time in seconds into the resulting audio stream, (2) the final volume percentage of the component stream, and (3) the component PCM stream itself.</param>
+        /// <returns>A single PCM stream composed of all component streams at their specified starting locations.</returns>
+        public static List<PCMSample> InterlaceSamples(
+            AudioFormat audioFormat,
+            double peakOutputAmplitudePercentage = 100.0,
+            params (double startTimeSeconds, double amplitudePercentage, List<PCMSample> audioStream)[] componentStreams
+        ) {
+            throw new NotImplementedException();
+        }
+
+
+        /// <summary>
+        /// Converts a stream of PCMSample objects into a raw byte array.
+        /// </summary>
+        /// <param name="audioStream">The stream to convert.</param>
+        /// <returns>A raw byte array representing the provided PCMSample stream.</returns>
+        public static byte[] ToByteArray(ref PCMSample[] audioStream) {
+            var returnStream = new List<byte>();
+            foreach(PCMSample sample in audioStream) { returnStream.AddRange(sample.Sample); }
+            return returnStream.ToArray();
+        }
+
+
+        /// <summary>
+        /// Create and return an audio stream of the specified duration that has no sound.
+        /// </summary>
+        /// <param name="audioFormat">The format in which the silence should be created.</param>
+        /// <param name="spaceDurationSec">The amount of time in seconds for which to create total silence.</param>
+        /// <returns>Zeroed set of PCMSample objects that will not make any sound if played.</returns>
+        /// <see cref="PCMSample"/>
+        public static List<PCMSample> CreateEmptySpace(AudioFormat audioFormat, double spaceDurationSec) {
+            double totalSamples = Math.Ceiling(spaceDurationSec * (double)audioFormat.SampleRate);
+            PCMSample[] silentAudioStream = new PCMSample[(int)totalSamples];
+            for(int i = 0; i < (int)totalSamples; i++) {
+                silentAudioStream[i] = new PCMSample(audioFormat, 0);
+            }
+            return new List<PCMSample>(silentAudioStream);
+        }
+
+
+        /// <summary>
         /// Changes the volume for a referenced audio stream based on the provided percentage. This is NOT multiplicative: the percentage
         /// provided in the parameter is based on 0 to 100% of the POSSIBLE volume of the audio format.
         /// </summary>
@@ -116,6 +162,28 @@ namespace ToneBaker.PCM {
                 // Append the samples onto the original stream being extended.
                 streamToExtend.AddRange(appendMe);
             }
+        }
+
+
+        /// <summary>
+        /// Crops the provided audio stream (by reference) to the specified duration. This operation is intended to be SUBTRACTIVE ONLY
+        /// and will not extend silence onto the ends of audio streams if the newDuration parameter is greater than the length of the stream.
+        /// </summary>
+        /// <param name="audioStream"></param>
+        /// <param name="newDuration"></param>
+        /// <seealso cref="CreateEmptySpace(AudioFormat, double)"/>
+        public static void CropStream(ref List<PCMSample> audioStream, double newDuration) {
+            if(audioStream.Count <= 0) {
+                throw new ArgumentException("CropStream: the audioStream reference must point to a stream that contains at least one sample.");
+            } else if(newDuration <= 0.0) {
+                throw new ArgumentException("CropStream: the requested new duration cannot be equal to or less than 0 seconds.");
+            }
+            AudioFormat fmt = audioStream[0].SampleFormat;
+            //stream in sec = currSamples / [(samples/sec) * numChannels]
+            double streamCurrentDuration = audioStream.Count / (fmt.SampleRate * fmt.ChannelCount);
+            if(streamCurrentDuration <= newDuration) { return; } //do nothing if requested duration is > current
+            int newDurationSampleCount = (int)(newDuration * fmt.SampleRate * fmt.ChannelCount);
+            audioStream.RemoveRange(newDurationSampleCount, audioStream.Count);
         }
 
 
