@@ -20,7 +20,7 @@ namespace ToneBaker.PCM {
         /// <summary>
         /// Defines multiple different waveforms available for the generator to build.
         /// </summary>
-        public enum WaveType { SINE, SAWTOOTH, SQUARE, TRIANGLE };
+        public enum WaveType { SINE, SAWTOOTH, SQUARE, TRIANGLE, WHITE_NOISE };
 
         /// <summary>
         /// Generates a new wave-form as an audio stream (list of PCMSample objects).
@@ -52,6 +52,7 @@ namespace ToneBaker.PCM {
             // Initialize the new stream object.
             var newWaveStream = new List<PCMSample>();
             // Create the wave stream based on the requested wave type.
+            var prng = new Random(); //PRNG as needed for noise and dither
             Func<int, double> sampleCalculation = wavePattern switch {
                 // f(x) = amplitude * SIN(2pi * x * frequency / sampleRate)
                 WaveType.SINE => (currSample =>
@@ -71,6 +72,10 @@ namespace ToneBaker.PCM {
                 WaveType.TRIANGLE => (currSample => 
                     ((2 * peakAmplitude) / Math.PI) 
                     * Math.Asin(Math.Sin(((2 * Math.PI * frequencyHz) / sampleRate) * currSample))
+                ),
+                // f(x) = random(x); f(x) constrained to [-MinPeak, MaxPeak]
+                WaveType.WHITE_NOISE => (currSample =>
+                    (prng.NextDouble()*(audioFormat.MaxSampleValue - audioFormat.MinSampleValue)) + audioFormat.MinSampleValue
                 ),
                 // If no other enum matched, throw exception
                 _ => throw new Exception("CreateNewWave: Invalid wave pattern selection: " + wavePattern.ToString())

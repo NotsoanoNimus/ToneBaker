@@ -154,7 +154,8 @@ namespace ToneBaker.WAV {
         private RiffFileFormat.DATA_CHUNK data;
         public RiffStream(List<PCMSample> fullAudioStream) {
             AudioFormat audioFormat = fullAudioStream?[0]?.SampleFormat;
-            byte[] audioData = WaveGenerator.ToByteArray(fullAudioStream.ToArray());
+            PCMSample[] staticStreamArray = fullAudioStream.ToArray();
+            byte[] audioData = WaveGenerator.ToByteArray(ref staticStreamArray);
             this.riff = new RiffFileFormat.RIFF_CHUNK();
             this.fmt = new RiffFileFormat.FMT_CHUNK(audioFormat);
             this.data = new RiffFileFormat.DATA_CHUNK(audioData);
