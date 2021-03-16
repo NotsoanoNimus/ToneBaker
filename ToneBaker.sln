@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToneBaker", "ToneBaker\ToneBaker.csproj", "{EDD6B6AB-ED23-4CFF-81D5-DBE76EC4F70F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToneBakerTesting", "ToneBakerTesting\ToneBakerTesting.csproj", "{BA938154-4D07-4719-9407-5BA4246E9AA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToneBaker", "ToneBaker\ToneBaker.csproj", "{D4F3F30F-ECBE-4CBA-8F33-9DCFC12A744F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EDD6B6AB-ED23-4CFF-81D5-DBE76EC4F70F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDD6B6AB-ED23-4CFF-81D5-DBE76EC4F70F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDD6B6AB-ED23-4CFF-81D5-DBE76EC4F70F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDD6B6AB-ED23-4CFF-81D5-DBE76EC4F70F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA938154-4D07-4719-9407-5BA4246E9AA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA938154-4D07-4719-9407-5BA4246E9AA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA938154-4D07-4719-9407-5BA4246E9AA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA938154-4D07-4719-9407-5BA4246E9AA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4F3F30F-ECBE-4CBA-8F33-9DCFC12A744F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4F3F30F-ECBE-4CBA-8F33-9DCFC12A744F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4F3F30F-ECBE-4CBA-8F33-9DCFC12A744F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4F3F30F-ECBE-4CBA-8F33-9DCFC12A744F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

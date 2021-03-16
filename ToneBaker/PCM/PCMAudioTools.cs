@@ -7,6 +7,18 @@ namespace ToneBaker.PCM {
     /// A class that provides static methods for manipulating PCM-encoded audio data.
     /// </summary>
     public static class PCMAudioTools {
+
+        /// <summary>
+        /// Allows for quick initialization of an empty audio stream when creating and modifying audio from scratch.
+        /// </summary>
+        /// <param name="audioFormat">The format of the new audio stream to work with.</param>
+        /// <returns>A "List" object of PCMSample objects containing only a single, empty sample.</returns>
+        /// <see cref="PCMSample"/>
+        public static List<PCMSample> InitializeStream(AudioFormat audioFormat) {
+            return new List<PCMSample>(new PCMSample[] { new PCMSample(audioFormat, 0) });
+        }
+
+
         /// <summary>
         /// Mixes different audio streams, represented as lists of PCMSample objects and their corresponding amplitude weightings, into an overall stream of sound.
         /// The resulting stream duration will equal the longest stream in the "samples" list, so varying stream durations can be easily mixed together; simply note that
