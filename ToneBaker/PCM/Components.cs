@@ -12,8 +12,11 @@ namespace ToneBaker.PCM {
         public readonly int BytesPerSample, BitsPerSample;
         public readonly int ChannelCount;
         public AudioFormat(int sampleRate, int bitsPerSample, int channelCount) {
+            if(sampleRate <= 0) { throw new ArgumentException("The sample rate must be a positive integer."); }
+            else if(bitsPerSample <= 0) { throw new ArgumentException("Bits-per-sample must be a positive integer."); }
+            else if(channelCount <= 0) { throw new ArgumentException("Number of channels must be greater than 0."); }
             this.SampleRate = sampleRate;
-            this.BitsPerSample = bitsPerSample % 32;
+            this.BitsPerSample = bitsPerSample > 32 ? 32 : bitsPerSample;
             this.BytesPerSample = (int)(bitsPerSample / 8) % 4;
             this.ChannelCount = channelCount;
             // Set min/max sample bounds and clip the value of the sample by reference.

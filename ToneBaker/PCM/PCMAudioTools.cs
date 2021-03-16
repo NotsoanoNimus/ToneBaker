@@ -8,7 +8,7 @@ namespace ToneBaker.PCM {
     /// </summary>
     public static class PCMAudioTools {
         /// <summary>
-        /// Mixes different audio streams, represented as lists of PCMSample objects and their corresponding amplitude weighting, into an overall stream of sound.
+        /// Mixes different audio streams, represented as lists of PCMSample objects and their corresponding amplitude weightings, into an overall stream of sound.
         /// The resulting stream duration will equal the longest stream in the "samples" list, so varying stream durations can be easily mixed together; simply note that
         /// the final stream starts all component streams at the "0" duration mark.
         /// </summary>
@@ -70,7 +70,7 @@ namespace ToneBaker.PCM {
 
         /// <summary>
         /// Changes the volume for a referenced audio stream based on the provided percentage. This is NOT multiplicative: the percentage
-        /// provided in the parameter is based on 0 to 100% the POSSIBLE volume of the audio format.
+        /// provided in the parameter is based on 0 to 100% of the POSSIBLE volume of the audio format.
         /// </summary>
         /// <param name="newAmplitudePerc">The new amplitude percentage, between 0 and 100%.</param>
         /// <param name="audioStream">A pointer to an audio stream whose values should be altered to match the new amplitude scaling.</param>
@@ -81,7 +81,7 @@ namespace ToneBaker.PCM {
             AudioFormat audioFormat = audioStream[0].SampleFormat;
             double maxAmplitude = audioFormat.GetPeakAmplitude();
             double minAmplitude = 0 - maxAmplitude - 1; //min peak is always negated positive peak, minus 1
-            double newAmplitudeRatio = (0.01 * newAmplitudePerc); //from % to ratio
+            double newAmplitudeRatio = (0.01 * Math.Min(100.0, Math.Abs(newAmplitudePerc))); //from % to ratio
             foreach(PCMSample sample in audioStream) {
                 // Change the amplitude per-channel.
                 int[] channelValues = sample.GetAllChannelValues();
@@ -125,7 +125,7 @@ namespace ToneBaker.PCM {
         /// <param name="audioFormat">The format to use for normalization.</param>
         /// <param name="audioStream"></param>
         public static void NormalizePeaks(ref List<PCMSample> audioStream) {
-
+            throw new NotImplementedException();
         }
 
     }

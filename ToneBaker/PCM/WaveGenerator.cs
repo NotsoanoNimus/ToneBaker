@@ -4,10 +4,10 @@ using System.Collections.Generic;
 namespace ToneBaker.PCM {
 
     /// <summary>
-    /// Provides methods used to generate sequences of PCMSample objects that can be put into a raw PCM stream.
+    /// Provides methods used to generate sequences of PCMSample objects that can be put into a raw audio stream.
     /// </summary>
     /// <see cref="PCMSample"/>
-    /// <see cref="PCMStream"/>
+    /// <see cref="AudioFormat"/>
     public static class WaveGenerator {
 
         /// <summary>
