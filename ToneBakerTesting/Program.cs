@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ToneBaker.PCM;
 using ToneBaker.WAV;
+using ToneBaker.MP3;
 
 namespace ToneBakerTesting {
     class Program {
