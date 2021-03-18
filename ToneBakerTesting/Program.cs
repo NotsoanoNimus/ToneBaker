@@ -27,8 +27,10 @@ namespace ToneBakerTesting {
             var CWTone = WaveGenerator.CreateNewWave(wavFormat, wavType, 100.0, 1.0, 680);
             Console.WriteLine("Stringing it all together into one sequence.");
             PCMAudioTools.AppendSamples(ref chord, (100.0, EAS), (20.0, CWTone));
-            Console.WriteLine("PLAYING");
-            PlaySoundData(ref chord);
+            Console.WriteLine("PLAYING RIFF STREAM");
+            PlayRIFFSoundData(ref chord);
+            Console.WriteLine("PLAYING MP3 STREAM");
+            PlayMP3SoundData(ref chord);
 
             // New sequence of tests...
 
@@ -37,7 +39,8 @@ namespace ToneBakerTesting {
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
         }
-        private static void PlaySoundData(ref List<PCMSample> audioStream) {
+
+        private static void PlayRIFFSoundData(ref List<PCMSample> audioStream) {
             using(var finalFile = new RiffStream(audioStream)) {
                 using(System.IO.MemoryStream m = new System.IO.MemoryStream(finalFile.GetRawWaveStream())) {
                     using(System.Media.SoundPlayer player = new System.Media.SoundPlayer(m)) {
@@ -47,6 +50,13 @@ namespace ToneBakerTesting {
                 // Can also write the file from memory to disk...
                 //System.IO.File.WriteAllBytes(Environment.GetEnvironmentVariable("USERPROFILE") + "\\Desktop\\testingCode.wav", finalFile.GetRawWaveStream());
             }
+        }
+
+        private static void PlayMP3SoundData(ref List<PCMSample> audioStream) {
+            using var finalFile = new Mp3Stream(audioStream);
+            using var m = new System.IO.MemoryStream(finalFile.GetRawWaveStream());
+            using var soundPlayer = new System.Media.SoundPlayer(m);
+            soundPlayer.PlaySync();
         }
     }
 }
